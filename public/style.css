@@ -1,7 +1,6 @@
 body {
-    background-image: url(https://images.assetsdelivery.com/compings_v2/petitelili/petitelili1604/petitelili160400078.jpg);
+    background-image: url(./petitelili160400078.jpg);
     background-attachment: fixed;
-    /* background-size: cover; */
 }
 input {
     margin: 5px;
@@ -53,7 +52,7 @@ input {
     margin-top: 10px;
 }
 
-.addExercise, .hideExercises, #previous .exercises {
+.addExercise, .hideExercises, #previous .exercises, #recent {
     display: none;
 }
 
