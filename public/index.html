@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="heading">Track your workouts!</h1>
+        <form id="newWorkoutForm">
+            <input type="text" name="newWorkout" id="newWorkout" placeholder="Workout Name" required>
+            <button type="submit">Create New workout</button>
+        </form>
+        <h3 class="heading">Most recent workout</h3>
+        <div id="recent">
+            <h3 id="recentWorkoutName"></h3>
+            <p id="recentCreated"></p>
+            <div class="exercises"></div>
+            <button class="addNewExercise" type="button">Add A New Exercise</button>
+            <form class="addExercise" id="recentId">
+                <input type="hidden" name="workoutId" class="workoutId">
+                <input type="text" name="exerciseName" placeholder="Exercise Name" required>
+                <input type="text" name="exerciseType" placeholder="Exercise Type" required>
+                <input type="number" name="duration" placeholder="Duration (minutes)" required>
+                <input type="number" name="distance" placeholder="Distance (miles)">
+                <input type="number" name="weight" placeholder="Weight (lbs)">
+                <input type="number" name="reps" placeholder="Reps">
+                <input type="number" name="sets" placeholder="Sets">
+                <button type="submit">Add Exercise</button>
+                <button type="button" class="cancel">Cancel</button>
+            </form>
+        </div>
+        <h3 class="heading">Previous workouts</h3>
+        <div id="previous"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

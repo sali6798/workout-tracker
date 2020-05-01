@@ -1,0 +1,62 @@
+body {
+    background-image: url(https://images.assetsdelivery.com/compings_v2/petitelili/petitelili1604/petitelili160400078.jpg);
+    background-attachment: fixed;
+    /* background-size: cover; */
+}
+input {
+    margin: 5px;
+}
+
+.container {
+    background-color: rgba(255, 0, 0, 0.6);
+    padding: 20px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.heading {
+    color: ivory;
+}
+
+.exercises {
+    display: flex;
+    flex-flow: wrap;
+    margin-top: 10px;
+}
+
+.prevWorkoutContainer, #recent, .exerciseContainer {
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.prevWorkoutContainer, #recent {
+    background-color: rgba(255, 0, 0, 0.85);
+}
+
+.exerciseContainer {
+    margin: 10px;
+    background-color: ivory;
+    box-shadow: 5px 5px 8px 2px #c70404;
+    padding: 10px 35px;
+}
+
+.addExercise {
+    margin-top: 10px;
+}
+
+.prevWorkoutContainer {
+    margin-bottom: 20px;
+}
+
+.addNewExercise {
+    margin-top: 10px;
+}
+
+.addExercise, .hideExercises, #previous .exercises {
+    display: none;
+}
+
+.cancel {
+    margin-left: 20px;
+}
