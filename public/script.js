@@ -3,23 +3,27 @@ $(document).ready(function() {
         method: "GET",
         url: "/recent"
     }).then(data => {
-        $("#recentWorkoutName").text(data.name);
-        $("#recentCreated").text(moment(data.created).calendar());
-        $("#recentId").attr("data-id", data._id);
-        $("#recent .addNewExercise").attr("data-id", data._id);
-        $("#recent .cancel").attr("data-id", data._id);
-
-        data.exercises.forEach(exercise => {
-            const entries = Object.entries(exercise);
-            const exerciseDiv = $("<div class='exerciseContainer'>")
-            for (const [key, value] of entries) {
-                if (key !== "_id" && key !== "__v" && value !== null) {
-                    const dataHTML = `<p>${key}: ${value}</p>`
-                   exerciseDiv.append(dataHTML)
+        if (data !== null) {
+            $("#recent").show();
+            $("#recentWorkoutName").text(data.name);
+            $("#recentCreated").text(moment(data.created).calendar());
+            $("#recentId").attr("data-id", data._id);
+            $("#recent .addNewExercise").attr("data-id", data._id);
+            $("#recent .cancel").attr("data-id", data._id);
+    
+            data.exercises.forEach(exercise => {
+                const entries = Object.entries(exercise);
+                const exerciseDiv = $("<div class='exerciseContainer'>")
+                for (const [key, value] of entries) {
+                    if (key !== "_id" && key !== "__v" && value !== null) {
+                        const dataHTML = `<p>${key}: ${value}</p>`
+                       exerciseDiv.append(dataHTML)
+                    }
                 }
-            }
-            $("#recent .exercises").append(exerciseDiv)
-        });
+                $("#recent .exercises").append(exerciseDiv)
+            });
+        }
+        
     })
 
     $.ajax({
