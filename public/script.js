@@ -1,10 +1,30 @@
 $(document).ready(function() {
+    // create a div that holds all the
+    // information for a exercise
+    function createExerciseDiv(exercise) {
+        // converts all exercise properties into
+        // an array [[key, value], [key..., value...]]
+        const entries = Object.entries(exercise);
+        const exerciseDiv = $("<div class='exerciseContainer'>")
+        for (const [key, value] of entries) {
+            // display all exercise properties that aren't the 
+            // id, version and not null
+            if (key !== "_id" && key !== "__v" && value !== null) {
+                const dataHTML = `<p>${key}: ${value}</p>`
+               exerciseDiv.append(dataHTML)
+            }
+        }
+        return exerciseDiv;
+    }
+    
+    // get the most recent workout and display its exercises
     $.ajax({
         method: "GET",
         url: "/recent"
     }).then(data => {
         if (data !== null) {
             $("#recent").show();
+            // populate headings/buttons with workout info
             $("#recentWorkoutName").text(data.name);
             $("#recentCreated").text(moment(data.created).calendar());
             $("#recentId").attr("data-id", data._id);
@@ -12,27 +32,21 @@ $(document).ready(function() {
             $("#recent .cancel").attr("data-id", data._id);
     
             data.exercises.forEach(exercise => {
-                const entries = Object.entries(exercise);
-                const exerciseDiv = $("<div class='exerciseContainer'>")
-                for (const [key, value] of entries) {
-                    if (key !== "_id" && key !== "__v" && value !== null) {
-                        const dataHTML = `<p>${key}: ${value}</p>`
-                       exerciseDiv.append(dataHTML)
-                    }
-                }
-                $("#recent .exercises").append(exerciseDiv)
+                $("#recent .exercises").append(createExerciseDiv(exercise))
             });
         }
-        
-    })
+    });
 
+    // display all previous workouts and their exercises
     $.ajax({
         method: "GET",
         url: "/previous"
     }).then(workouts => {
-        console.log(workouts)
+        // loops through each workout, creates a div for it and
+        // populate it with divs for its exercises
         workouts.forEach((workout, index) => {
             const workoutDiv = $(`<div id="${index}" class='prevWorkoutContainer'>`);
+            // html for each workout
             const titleHTML = `
                 <h3>${workout.name}</h3>
                 <p>${moment(workout.created).calendar()}</p>
@@ -56,23 +70,17 @@ $(document).ready(function() {
             $("#previous").append(workoutDiv)
 
             workout.exercises.forEach(exercise => {
-                const entries = Object.entries(exercise);
-                const exerciseDiv = $("<div class='exerciseContainer'>")
-                for (const [key, value] of entries) {
-                    if (key !== "_id" && key !== "__v" && value !== null) {
-                        const dataHTML = `<p>${key}: ${value}</p>`
-                       exerciseDiv.append(dataHTML)
-                    }
-                }
-                $(`#${index} .exercises`).append(exerciseDiv)
+                $(`#${index} .exercises`).append(createExerciseDiv(exercise))
             });
-        })
-        
-    })
+        });
+    });
 
+    // event listener on the form to add a new exercise
     $(document).on("submit", ".addExercise", function(event) {
         event.preventDefault();
         $(this).hide();
+        
+        // build the new exercise object
         const exerciseObj = {
             id: $(this).data('id'),
             name: $(this).find(":input[name=exerciseName]").val().trim(),
@@ -84,19 +92,25 @@ $(document).ready(function() {
             sets: $(this).find(":input[name=sets]").val()
         } 
 
-        console.log(exerciseObj)
-
+        // make a POST request to create exercise
+        // and then reload the page to display
+        // newly added exercise
         $.ajax({
             method: "POST",
             data: exerciseObj,
             url: "/api/addexercise"
         }).then(data => {
             location.reload();
-        })
-    })
+        });
+    });
 
+    // event listener on the form to create a new workout
     $("#newWorkoutForm").on("submit", function(event) {
         event.preventDefault();
+        
+        // make a POST request to create a new workout
+        // then reload the page to display the newly
+        // created workout
         $.ajax({
             method: "POST",
             data: { name: $("#newWorkout").val().trim() },
@@ -107,26 +121,38 @@ $(document).ready(function() {
         })
         .catch(err => {
             console.log(err);
-        })
-    })
+        });
+    });
 
+    // display the add exercise form for the specific
+    // workout it was clicked in
     $(document).on("click", ".addNewExercise", function() {
         $(`.addExercise[data-id=${$(this).data("id")}] `).show();
-    })
+    });
 
+    // display all the exercises for the specific
+    // workout the button was clicked in
     $(document).on("click", ".viewExercises", function() {
+        // hide 'View Exercises' button, show 'Hide Exercises' button
+        // and display the exercises
         $(this).hide();
         $(`.hideExercises[data-id=${$(this).data("id")}]`).show();
         $(`.exercises[data-id=${$(this).data("id")}] `).css("display", "flex");
-    })
+    });
 
+    // hide all the exercises for the specific workout
+    // the button was clicked in
     $(document).on("click", ".hideExercises", function() {
+        // hide 'Hide Exercises' button, show 'View Exercises' button
+        // and hide the exercises
         $(this).hide();
         $(`.viewExercises[data-id=${$(this).data("id")}]`).show();
         $(`.exercises[data-id=${$(this).data("id")}] `).hide();
-    })
+    });
 
+    // hide the add exercise form for the workout
+    // the button was clicked in
     $(document).on("click", ".cancel", function() {
-        $(`.addExercise[data-id=${$(this).data("id")}] `).hide();
-    })
+        $(`.addExercise[data-id=${$(this).data("id")}]`).hide();
+    });
 })
